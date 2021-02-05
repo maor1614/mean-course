@@ -9,29 +9,28 @@ const cors = require("cors");
 const postRoutes = require("./routes/posts");
 const userRoutes = require("./routes/user");
 
-
-
 mongoose
   .connect(
-    "mongodb+srv://maor:X9pAlncO4bJlIn5I@cluster0.xazx4.mongodb.net/node-angular?retryWrites=true&w=majority",
-    { useNewUrlParser: true, useUnifiedTopology: true }
+    "mongodb+srv://maor:" +
+      process.env.MONGO_ATLAS_PW +
+      "@cluster0.g0qvb.mongodb.net/angular?retryWrites=true&w=majority",
+    { useNewUrlParser: true, useUnifiedTopology: true },
+    ("useFindAndModify", false)
   )
   .then(() => {
     console.log("connected to database");
-  }) 
+  })
   .catch(() => {
     console.log("connection failed");
   });
-  mongoose.set('useNewUrlParser', true);
-  mongoose.set("useFindAndModify", false);
-  mongoose.set("useCreateIndex", true);
-  
+mongoose.set("useNewUrlParser", true);
+mongoose.set("useFindAndModify", false);
+mongoose.set("useCreateIndex", true);
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/images", express.static(path.join("backend/images")));
 app.use(cors());
-
-
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -47,9 +46,5 @@ app.use((req, res, next) => {
 });
 app.use("/api/posts", postRoutes);
 app.use("/api/user", userRoutes);
-
-
-
-//X9pAlncO4bJlIn5I
 
 module.exports = app;
